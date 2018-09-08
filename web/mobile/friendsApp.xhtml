@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile"
+                template="../template/ui_mobile_home.xhtml">
+    <ui:define name="head">
+        <ui:param name="PageTitle" value="我的好友" />      
+        <ui:param name="footerShow" value="none" />
+    </ui:define>
+    <ui:define name="firstPageContent">
+        <pm:content>
+            <p:commandButton value="New" icon="ui-icon-plus" 
+                             oncomplete="PrimeFaces.Mobile.navigate('#userSeach', {
+                             reverse: false,
+                             transition: 'slideup'});"
+                             />
+            <p:dataList value="#{friendsAppController.friends}" var="friend"  id="list" >
+                <p:ajax event="swipeleft" listener="#{userBean.swipeUser}"  oncomplete="PF('dlg_friends').show();"/>
+                <p:ajax event="swiperight" listener="#{userBean.swipeUser}"  oncomplete="PF('dlg_friends').show();"/>
+                <f:facet name="header">
+                    <h1>我的好友</h1>
+                </f:facet>
+                <p:link  style="margin-left: 15px;margin-right: 15px" outcome="/mobile/talk" >
+                    <f:param name="userId" value="#{userBean.user.id}"/>
+                    <f:param name="talkTo" value="#{friend.id}"/>
+                    <f:param name="back" value="/mobile/friendsApp" />
+                    <p:graphicImage value="#{friend.logo}" />
+                    <h2>#{friend.name}</h2>
+                    <p style="color: red;display:#{facadeBean.showOrNot(friend.id)}">你有新消息</p>
+                </p:link>
+            </p:dataList>
+        </pm:content>
+        <p:dialog widgetVar="dlg_friends" showEffect="pop"  >
+            <p:menu>
+                <p:menuitem value="删除好友" actionListener="#{friendsAppController.removeFriend()}" 
+                            oncomplete="PF('dlg_friends').hide();window.open('\/yunzhi\/faces\/mobile\/friendsApp.xhtml','_self')" 
+                            style="min-width: 200px">
+                </p:menuitem>
+            </p:menu>
+        </p:dialog>
+    </ui:define>
+    <ui:define name='BodyContent'>
+        <pm:page id="userSeach">
+            <h:form>
+                <pm:header title="用户搜索">
+                    <p:commandButton  value="Back" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline" 
+                                      oncomplete="PrimeFaces.Mobile.navigate('#firstPage', {
+                                      reverse: true,
+                                      transition: 'slideup'});"
+                                      />
+                </pm:header>
+                <pm:content>
+                    <p:growl id="msgs"  />
+                    <div style="max-width:960px;"></div>
+                    <p>您可以搜索所有注册用户</p>
+                    <p>您只需要输入关键字等待几秒即可</p>
+                    <p:autoComplete id="advanced" queryDelay="1000"  completeMethod="#{searchController.searchUser}"
+                                    var="user" itemLabel="#{user.name}" itemValue="#{user}" converter="userConverter" panelStyleClass="ui-themes">
+                        <p:ajax event="itemSelect" listener="#{searchController.onUserSelect}" oncomplete="PF('dlg1').show();" /> 
+                        <div class="ui-listview" >
+                            <div class="ui-li-has-thumb">
+                                 <!--ui-btn-icon-right ui-icon-carat-r-->
+                                <div class="ui-commandlink ui-widget ui-btn" >
+                                    <p:graphicImage value="#{user.logo}"/>
+                                    <div style="margin-left: 0em; text-align: left; ">
+                                        <h2 style="margin:0 0">#{user.name}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p:autoComplete>
+
+                </pm:content>
+                <p:dialog widgetVar="dlg1" showEffect="pop" modal="false" >
+                    <p:menu>
+                        <p:menuitem value="添加好友" actionListener="#{searchController.addFriend}" 
+                                    oncomplete="PF('dlg1').hide();" ajax="false" 
+                                    update="msgs"
+                                    style="min-width: 200px"/>
+                    </p:menu>
+                </p:dialog>
+            </h:form>  
+        </pm:page>
+    </ui:define>
+
+</ui:composition>
+

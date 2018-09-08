@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <h:head>  
+        <!--  ui-btn-icon-right       ui-icon-carat-r-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous"/>
+    </h:head>  
+    <h:body>    
+        <pm:page id="secondPage" >
+            <pm:header title="搜索" >
+                <p:tabMenu activeIndex="1">
+                    <p:menuitem value="首页" outcome="/mobile/index"  />
+                    <p:menuitem value="课程"  outcome="/mobile/course" />
+                    <p:menuitem value="院校"  outcome="/mobile/school"  />
+                    <p:menuitem value="我的课程"  outcome="/mobile/myCourses" />
+                </p:tabMenu>
+            </pm:header>
+            <pm:content>
+                <h:form>
+                    <div style="max-width:960px;"></div>
+                    <p>您可以搜索任何课程</p>
+                    <p:autoComplete id="advanced" queryDelay="1000"  completeMethod="#{searchController.searchCourse}"
+                                    var="course" itemLabel="#{course.name}" itemValue="#{course}" converter="courseConverter" panelStyleClass="ui-themes">
+                        <p:ajax event="itemSelect" listener="#{searchController.onItemSelect}" oncomplete="window.open('\/yunzhi\/faces\/mobile\/targetCourse.xhtml','_self')" /> 
+                        <div class="ui-listview" >
+                            <div class="ui-li-has-thumb">
+                                <div class="ui-commandlink ui-widget ui-btn " >
+                                    <p:graphicImage value="#{course.logo}"/>
+                                    <div style="margin-left: 0em;margin-top: 0.4em; text-align: left; ">
+                                        #{course.name}<br/>
+                                        教师：<ui:repeat value="#{course.teacherList}" var="teacher">#{teacher.user.name}&#160;</ui:repeat>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p:autoComplete>
+                </h:form>  
+            </pm:content>
+        </pm:page>
+    </h:body>  
+</html>  
+

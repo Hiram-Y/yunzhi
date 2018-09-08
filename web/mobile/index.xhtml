@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile"
+                template="../template/ui_mobile_home.xhtml">
+    <ui:define name="head">
+        <ui:param name="PageTitle" value="云智教育平台" />   
+        <ui:param name="TabMenuActiveIndex" value="0"/>
+        <ui:param name="footerClassroom" value="none" />
+        <script>
+//<![CDATA[
+
+//]]>
+        </script>
+    </ui:define>
+    <ui:define name="firstPageContent">
+        <pm:content class="myContent">
+            <h:form >
+                <div style="max-width: 960px;margin-left: auto;margin-right: auto;text-align: center;">
+                    <video  style="background-color: black;width:100%; height:100%; object-fit: fill"
+                            autoplay="autoplay" controls="controls" autobuffer="autobuffer"
+                            src="http://10.206.11.101:8888/live/livestream222.m3u8"
+                            type="application/vnd.apple.mpegurl">
+                    </video>
+                </div>
+                <div style="margin: 0.5em 1.5em;margin-left: auto;margin-right: auto;text-align: center;max-width: 960px">
+                    <p:button value="进入直播间"   style="margin-top: 0em;"  outcome="/mobile/liveRoom"  >
+                        <f:param name="liveRoomId" value="index"/>
+                    </p:button>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                    <h1>HelloWorld</h1><td/>
+                </div>
+            </h:form>
+        </pm:content> 
+    </ui:define>
+</ui:composition>

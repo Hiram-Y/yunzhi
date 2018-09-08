@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile"
+                template="../template/ui_mobile_home.xhtml">
+    <ui:define name="head">
+        <ui:param name="TabMenuActiveIndex" value="1"/>
+        <ui:param name="PageTitle" value="云智教育平台" />   
+        <ui:param name="footerClassroom" value="none" />
+        <!--        clientSide代码-->
+        <script>
+            PrimeFaces.Mobile.navigate('#second', {
+                reverse: true | false,
+                transition: 'fade'
+            });
+        </script>
+    </ui:define>
+    <ui:define name="firstPageContent">
+        <pm:content>
+            <p:dataList value="#{courseController.courses}" var="course" >
+                    <p:commandLink action="/mobile/targetCourse" ajax="false">
+                        <f:setPropertyActionListener target="#{userBean.xhtmlTargetCourse}" value="#{course}" />
+                        <p:graphicImage value="#{course.logo}" />
+                        <h2>#{course.name}</h2>
+                        <p><ui:repeat value="#{course.teacherList}" var="teacher">#{teacher.user.name}&#160;</ui:repeat></p>
+                        <p class="ui-li-aside"><strong></strong></p>
+                    </p:commandLink>
+            </p:dataList>
+        </pm:content>
+    </ui:define>
+    <ui:define name="BodyContent">
+    </ui:define>
+</ui:composition>
+

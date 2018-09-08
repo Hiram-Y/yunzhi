@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./template/ui_home.xhtml">
+    <ui:define name="head">
+        <ui:param name="selectSchoolView" value="white" />
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <div style="width:960px; margin-left:auto; margin-right:auto; text-algin:center">
+                <p:dataGrid value="#{schoolController.schools}" var="school" columns="4" layout="grid">
+                    <p:panel style="text-align:center;border:none " >
+                        <div class="responsive">
+                            <div class="img">
+                                <p:link outcome="targetSchool" >
+                                    <f:param name="SchoolId" value="#{school.id}" />
+                                    <p:graphicImage value="/images/demo1.jpg" />
+                                </p:link>
+                                <div class="desc"><h:outputText value="#{school.name}" /></div>
+                            </div>
+                        </div>
+                    </p:panel>
+                </p:dataGrid>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

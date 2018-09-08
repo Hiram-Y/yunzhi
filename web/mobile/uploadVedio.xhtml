@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile">
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous"/>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <pm:page id="uploadPage" >
+            <pm:header title="文件上传">
+                <h:form>
+                    <p:button  value="Back" icon="ui-icon-arrow-l" 
+                               styleClass="ui-btn-left ui-btn-inline" 
+                               outcome="/mobile/targetChapter"
+                               />
+                </h:form>
+            </pm:header>
+            <pm:content>
+                <h:form enctype="multipart/form-data">
+                    <p:messages showDetail="true" id="messages_upload" autoUpdate="true" />
+                    <p:fileUpload  mode="simple" 
+                                   value="#{targetChapterController.file}" />
+                    <p:commandButton value="Upload" icon="ui-icon-arrow-u" ajax="false" 
+                                     actionListener="#{targetChapterController.startUpload}"/>
+                </h:form>
+            </pm:content>
+        </pm:page>
+    </h:body>
+</html>

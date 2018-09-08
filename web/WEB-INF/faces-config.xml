@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <managed-bean>
+        <managed-bean-name>userBean</managed-bean-name>
+        <managed-bean-class>web.UserBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>facadeBean</managed-bean-name>
+        <managed-bean-class>web.FacadeBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>searchController</managed-bean-name>
+        <managed-bean-class>web.SearchController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+<!--    <managed-bean>
+        <managed-bean-name>cloudDiskController</managed-bean-name>
+        <managed-bean-class>web.CloudDiskController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>-->
+    
+    <managed-bean>
+        <managed-bean-name>senderBean</managed-bean-name>
+        <managed-bean-class>demo.SenderBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <!--    JSF1.2依赖注入方法测试成功-->
+    <!--    <managed-bean>
+        <managed-bean-name>loginController</managed-bean-name>
+        <managed-bean-class>web.LoginController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+        <managed-property>
+            <property-name>userBean</property-name>
+            <value>#{userBean}</value>
+        </managed-property>
+    </managed-bean>-->
+    <!--    <managed-bean>
+        <managed-bean-name>themeService</managed-bean-name>
+        <managed-bean-class>demo.ThemeService</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>-->
+    <!--    <managed-bean>
+        <managed-bean-name>liveRoomController</managed-bean-name>
+        <managed-bean-class>web.LiveRoomController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>-->
+    <!--    <managed-bean>
+    <managed-bean-name>liveRoomService</managed-bean-name>
+    <managed-bean-class>web.LiveRoomService</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope></managed-bean>-->
+    <managed-bean>
+        <managed-bean-name>liveRoomController</managed-bean-name>
+        <managed-bean-class>web.LiveRoomController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+</faces-config>

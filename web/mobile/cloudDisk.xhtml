@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile"
+                template="../template/ui_mobile_home.xhtml">
+    <ui:define name="head">
+        <ui:param name="PageTitle" value="我的云盘" />      
+        <ui:param name="footerShow" value="none" />
+    </ui:define>
+    <ui:define name="firstPageContent">
+        <pm:content>
+            <p:dataList value="#{cloudDiskController.fileList}" var="file"  id="list" >
+                <f:facet name="header">
+                    <h1>我的文件</h1>
+                </f:facet>
+                <p:commandLink  value="#{file.name}" style="margin-left: 15px;margin-right: 15px" 
+                                action="#{cloudDiskController.initStreamFile}"
+                                oncomplete="PF('dlg_file').show();" >
+                    <f:setPropertyActionListener target="#{cloudDiskController.selectFile}" value="#{file}" />
+                </p:commandLink >
+            </p:dataList>
+        </pm:content>
+        <p:dialog widgetVar="dlg_file" showEffect="pop"  >
+            <h:form>
+                <p:commandButton value="下载" 
+                                 ajax="false"
+                                 onclick="PrimeFaces.monitorDownload();"
+                                 oncomplete="PF('dlg_file').hide();"
+                                 style="min-width: 200px">
+                    <p:fileDownload value="#{userBean.streamFile}" />
+                </p:commandButton>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+    <ui:define name='BodyContent'>
+    </ui:define>
+</ui:composition>
+
+

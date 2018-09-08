@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile"
+                template="../template/ui_mobile_home.xhtml">
+    <ui:define name="head">
+        <ui:param name="TabMenuActiveIndex" value="0"/>
+        <ui:param name="PageTitle" value="#{userBean.xhtmlTargetCourse.name}" />
+        <ui:param name="footerHome" value="none" />
+    </ui:define>
+    <ui:define name="firstPageContent">
+        <pm:content>
+            <p:messages showDetail="true" id="msg_upload" autoUpdate="true" />
+            <p:panelGrid columns="1" style="display:#{classroomInformationFlowController.showTeacherOptionDiv}">
+                <p:commandButton value="添加通知"                                 
+                                 oncomplete="PrimeFaces.Mobile.navigate('#newNotice', {
+                                 reverse: false,
+                                 transition: 'slideup'});"/>
+            </p:panelGrid>
+            <p:accordionPanel id="noticeList" value="#{classroomInformationFlowController.noticeList}" var="notice">
+                <p:tab title="#{notice.title}">
+                    <h:outputText value="#{notice.body}" />
+                    <p:commandButton value="上传作业"  style="display:#{classroomInformationFlowController.showUpload(notice)}"
+                                     oncomplete="window.open('\/yunzhi\/faces\/mobile\/uploadNotice.xhtml','_self')" >
+                        <f:setPropertyActionListener target="#{userBean.path}" value="#{notice.uploadFileUrl}" />
+                    </p:commandButton>
+                </p:tab>
+            </p:accordionPanel>
+        </pm:content>
+    </ui:define>
+    <ui:define name="BodyContent">
+        <pm:page id="newNotice" lazy="true" >
+            <pm:header title="编辑通知" >
+                <h:form>
+                    <p:commandButton  value="Back" icon="ui-icon-arrow-l" 
+                                      styleClass="ui-btn-left ui-btn-inline" 
+                                      oncomplete="PrimeFaces.Mobile.navigate('#firstPage', {
+                                      reverse: true,
+                                      transition: 'slideup'});"
+                                      />
+                </h:form>
+            </pm:header>
+            <pm:content>
+                <h:form>
+                    <p:growl id="growl_flow" showDetail="true" />
+                    <p:outputPanel id="editFormPanel">              
+                        <pm:field>
+                            <p:outputLabel for="phone" value="通知标题" />
+                            <p:inputText id="phone" 
+                                         value="#{classroomInformationFlowController.notice.title}"/>
+                        </pm:field>
+                        <pm:field>
+                            <p:outputLabel for="address" value="通知内容" />
+                            <p:inputTextarea id="address" 
+                                             value="#{classroomInformationFlowController.notice.body}" />
+                        </pm:field>
+                        <pm:field>
+                            <p:outputLabel for="switch" value="上传通道是否开启" />
+                            <p:inputSwitch id="switch"  value="#{classroomInformationFlowController.upload}"
+                                           onLabel="开启" offLabel="关闭" >
+                                <p:ajax listener="#{classroomInformationFlowController.checkUpload}"  update="message_newNotice" />
+                            </p:inputSwitch>
+                            <p:messages id="message_newNotice"  closable="true"  showDetail="true"/> 
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton value="保存" action="#{classroomInformationFlowController.newNotice}" 
+                                     update="firstPage:firstContentForm:noticeList,growl_flow" icon="ui-icon-check"/>
+                </h:form>  
+            </pm:content>
+        </pm:page>
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:p="http://primefaces.org/ui">  
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <h:head>  
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous"/>
+    </h:head>  
+    <h:body>    
+        <pm:page id="targetCourse" >
+            <pm:header>
+                <p:button styleClass="ui-btn-left ui-btn-inline" value="Back" icon="ui-icon-arrow-l" outcome="course" />
+                <h1><h:outputText  value="#{userBean.xhtmlTargetCourse.name}" /></h1>
+            </pm:header>
+            <pm:content>
+                <div style="display: #{targetCourseController.isXhtmlDivShow};max-width:960px;">
+                    <h:form id="form">
+                        <p:commandButton value="#{targetCourseController.xhtmlButtonValue}" action="#{targetCourseController.xhtmlButtonAction}" disabled="#{targetCourseController.xhtmlbuttonDisabled}" ajax="false" />
+                    </h:form>
+                    <h1>#{targetCourseController.targetCourse.name}</h1>
+                    <pm:field>
+                        <h3 style="color: red">费用</h3>
+                        <h3 style="color: red">#{targetCourseController.targetCourse.cost}</h3>
+                    </pm:field>
+                    <pm:field>
+                        <h3>开课时间</h3>
+                        <h3>#{targetCourseController.dateToString(targetCourseController.targetCourse.coursePK.startDate)}</h3>
+                    </pm:field>
+                    <pm:field>
+                        <h3>结课时间</h3>
+                        <h3>#{targetCourseController.dateToString(targetCourseController.targetCourse.coursePK.endDate)}</h3>
+                    </pm:field>
+                </div>
+            </pm:content>
+        </pm:page>
+    </h:body>  
+</html>  

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <h:head>
+        <style>
+            .myContent{
+                padding: 0em 0em !important;
+            }
+        </style>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous"/>
+        <!--        <script type="text/javascript">
+                    function storageLiveRoomId(liveRoomId) {
+                        var key = "liveRoomId";
+                        sessionStorage.setItem(key, liveRoomId);
+        //                alert(sessionStorage.getItem("liveRoomId"));
+                    }
+                </script>-->
+        <ui:insert name="head"></ui:insert>
+    </h:head>
+    <h:body>
+        <pm:page id="firstPage"  >
+            <h:form id="firstForm">
+                <pm:header title="#{PageTitle}" fixed="true" id="header">
+                    <p:toolbar id="toolbar" >
+                        <f:facet name="left">
+                            <p:commandButton id="btn_bars" icon="fa fa-bars" value=""   />
+                            <p:commandButton id="btn_search" icon="fa fa-search" value=""                                  
+                                             oncomplete="PrimeFaces.Mobile.navigate('#searchPage', {
+                                             reverse: false,
+                                             transition: 'slideup'});"  />     
+                        </f:facet>
+                        <f:facet id="toolbar_right" name="right">
+                            <p:button id="signInButton" value="注册/登陆"  style="display:#{userBean.signOutStatus};" outcome="/mobile/login" />
+                            <p:commandButton id="thButton" value="" icon="fa fa-th" style="display:#{userBean.signInStatus};" onclick="PF('appsOLP').show()" />
+                            <p:commandButton id="bellButton" value="" icon="fa fa-bell"  style="display:#{userBean.signInStatus};"  onclick="PF('messageOLP').show()" />
+                            <p:commandButton id="userButton" value="&#160;#{userBean.user.name}" icon="fa fa-user" style="display:#{userBean.signInStatus};"
+                                             oncomplete="PrimeFaces.Mobile.navigate('#personalCenter', {
+                                             reverse: false,
+                                             transition: 'slidefade'});"/>
+                        </f:facet>
+                    </p:toolbar>
+                </pm:header>       
+            </h:form>
+            <h:form id="firstContentForm">
+                <ui:insert name="firstPageContent"></ui:insert>
+            </h:form>
+            <h:form>
+                <pm:footer fixed="true" style="display:#{footerShow}">
+                    <p:tabMenu activeIndex="#{TabMenuActiveIndex}" style="display:#{footerHome}">
+                        <p:menuitem value="首页" outcome="/mobile/index"  />
+                        <p:menuitem value="课程"  outcome="/mobile/course" />
+                        <p:menuitem value="院校"  outcome="/mobile/school"  />
+                        <p:menuitem value="我的课程"  outcome="/mobile/myCourses" />
+                    </p:tabMenu>
+                    <p:tabMenu activeIndex="#{TabMenuActiveIndex}" style="display:#{footerClassroom}" >
+                        <p:menuitem value="信息流" outcome="/mobile/classroom_informationFlow" />
+                        <p:menuitem value="学习中心" outcome="/mobile/classroom_studyCenter" />
+                        <p:menuitem value="学友圈" outcome="/mobile/classroom_friends" />
+                    </p:tabMenu>
+                </pm:footer>
+            </h:form>
+            <p:overlayPanel id="appsOLP" for=":firstPage:firstForm:thButton"  at="left"  widgetVar="appsOLP" showEffect="overlay" >
+                <h:form>
+                    <h2>应用</h2>
+                    <p:button value="我的好友" icon="fa fa-comments" outcome="/mobile/friendsApp" />
+                    <p:button value="我的云盘" icon="fa fa-save" outcome="/mobile/cloudDisk" />
+                </h:form>
+            </p:overlayPanel>
+            <p:overlayPanel id="messageOLP" for=":firstPage:firstForm:bellButton"  at="left"  
+                            widgetVar="messageOLP" showEffect="overlay" 
+                            dynamic="true">
+                <h:form>
+                    <h2>通知</h2>
+                    <p:dataList value="#{noticeController.newMessageUserList}" var="user">
+                        <p:commandLink  oncomplete="PrimeFaces.Mobile.navigate('#talkPage', {
+                                        reverse: false,
+                                        transition: 'slide'});"   >
+                            <f:setPropertyActionListener  target="#{userBean.userId}" value="#{userBean.user}"/>
+                            <f:setPropertyActionListener  target="#{userBean.talkTo}" value="#{user}"/>
+                            <p:graphicImage value="#{user.logo}" />
+                            <h2>#{user.name}</h2>
+                            <p style="color: red;display:#{facadeBean.showOrNot(user.id)}">你有新消息</p>
+                        </p:commandLink>
+                    </p:dataList>
+                </h:form>
+            </p:overlayPanel>
+            <p:overlayPanel id="pnl-basic" for=":firstPage:firstForm:btn_bars" widgetVar="pnl-basic" at="left"  showEffect="overlay"   >
+                <h:form>
+                    <div style="display: #{userBean.signInStatus}">
+                        <ui:repeat value="#{userBean.resumeList}" var="resume"  >
+                            <div class="ui-listview" >
+                                <div class="ui-li-has-thumb">
+                                    <!--ui-btn-icon-right ui-icon-carat-r-->
+                                    <a class="ui-commandlink ui-widget ui-btn" 
+                                       onclick="PrimeFaces.Mobile.navigate('#personalCenter', {
+                                                   reverse: false,
+                                                   transition: 'slidefade'});" >
+                                        <p:graphicImage value="#{userBean.user.logo}"/>
+                                        <div style="margin-left: 0em;margin-top: 0.3em; text-align: left; ">
+                                            <h3 style="margin:0 0;">#{userBean.user.name}</h3>
+                                            <h3 style="margin:0 0;">#{resume.identity.name}</h3>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </ui:repeat>
+                        <p:commandButton value="登出"  icon="fa fa-sign-out-alt"  actionListener="#{userBean.signOut()}" update=":firstPage:firstForm:toolbar" 
+                                         oncomplete="window.open('\/yunzhi\/faces\/mobile\/index.xhtml','_self')"  />
+                    </div>
+                    <p:menu>
+                        <p:submenu label="导航栏">
+                            <p:menuitem value="首页" outcome="/mobile/index"  />
+                            <p:menuitem value="课程"  outcome="/mobile/course" />
+                            <p:menuitem value="院校"  outcome="/mobile/school"  />
+                            <p:menuitem value="我的课程"  outcome="/mobile/myCourses" />
+                        </p:submenu>
+                    </p:menu>
+                </h:form>
+            </p:overlayPanel>
+        </pm:page>
+
+
+
+        <pm:page id="searchPage" >
+            <pm:header title="课程搜索" >
+                <h:form>
+                    <p:commandButton  value="Back" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline" 
+                                      oncomplete="PrimeFaces.Mobile.navigate('#firstPage', {
+                                      reverse: true,
+                                      transition: 'slideup'});"
+                                      />
+                </h:form>
+            </pm:header>
+            <pm:content>
+                <h:form>
+                    <div style="max-width:960px;">
+                        <p>您可以通过课程名称和老师姓名搜索任何课程</p>           
+                        <p:autoComplete id="advanced" queryDelay="1000"  completeMethod="#{searchController.searchCourse}"
+                                        placeholder="输入关键字等待几秒即可" emptyMessage="没有搜索到相关课程"
+                                        var="course" itemLabel="#{course.name}" itemValue="#{course}" converter="courseConverter" panelStyleClass="ui-themes">
+                            <p:ajax event="itemSelect" listener="#{searchController.onItemSelect}" oncomplete="window.open('\/yunzhi\/faces\/mobile\/targetCourse.xhtml','_self')" /> 
+                            <div class="ui-listview" >
+                                <div class="ui-li-has-thumb">
+                                    <div class="ui-commandlink ui-widget ui-btn " >
+                                        <p:graphicImage value="#{course.logo}"/>
+                                        <div style="margin-left: 0em;margin-top: 0.4em; text-align: left; ">
+                                            #{course.name}<br/>
+                                            教师：<ui:repeat value="#{course.teacherList}" var="teacher">#{teacher.user.name}&#160;</ui:repeat>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:autoComplete>
+                        <p:messages id="messages"  closable="true" autoUpdate="true"/>
+                    </div>
+                </h:form>  
+            </pm:content>
+        </pm:page>
+
+
+        <pm:page id="personalCenter" >
+            <pm:header title="我的账号" >
+                <h:form>
+                    <p:commandButton  value="Back" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline" 
+                                      oncomplete="PrimeFaces.Mobile.navigate('#firstPage', {
+                                      reverse: true,
+                                      transition: 'slidefade'});"
+                                      />
+                </h:form>
+            </pm:header>
+            <pm:content>
+                <h:form>
+                    <div style="max-width:960px;display: #{userBean.signInStatus}">
+                        <ui:repeat value="#{userBean.resumeList}" var="resume"  >
+                            <div class="ui-listview" >
+                                <!--                                <div class="ui-li-has-thumb" >-->
+                                <!--ui-btn-icon-right ui-icon-carat-r-->
+                                <div class="ui-commandlink ui-widget ui-btn"   style="height:3.5em;" >
+                                    <p:graphicImage value="#{userBean.user.logo}"  style="position:absolute;right:0;top:0;max-height:5em;max-width:5em"/>
+                                    <div style="margin-left: 0em;margin-top: 1em; text-align: left; ">
+                                        <h3 style="margin:0 0;">头像</h3>
+                                    </div>                                        
+                                </div>
+                                <!--                                </div>-->
+                            </div>
+                            <pm:field/>
+                            <div class="ui-listview" >
+                                <div class="ui-commandlink ui-widget ui-btn" >
+                                    <div style="margin-left: 0em;margin-top: 0em; text-align: left; ">
+                                        <h3 style="margin:0 0; float: left">学校单位</h3>
+                                        <h3 style="margin:0 0; float: right">#{resume.school.name}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <pm:field/>
+                            <div class="ui-listview" >
+                                <div class="ui-commandlink ui-widget ui-btn" >
+                                    <div style="margin-left: 0em;margin-top: 0em; text-align: left; ">
+                                        <h3 style="margin:0 0; float: left">身份</h3>
+                                        <h3 style="margin:0 0; float: right">#{resume.identity.name}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </ui:repeat>
+                        <pm:field/>
+                        <div class="ui-listview" >
+                            <div class="ui-commandlink ui-widget ui-btn" >
+                                <div style="margin-left: 0em; text-align: left; ">
+                                    <h3 style="margin:0 0; float: left">用户ID</h3>
+                                    <h3 style="margin:0 0; float: right">#{userBean.user.id}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <pm:field/>
+                        <div class="ui-listview" >
+                            <a class="ui-commandlink ui-widget ui-btn" 
+                               onclick="PrimeFaces.Mobile.navigate('#changeName', {
+                                           reverse: false,
+                                           transition: 'slidefade'});">
+                                <div style="margin-left: 0em;margin-top: 0em; text-align: left; ">
+                                    <h3 style="margin:0 0; float: left">姓名</h3>
+                                    <h3 style="margin:0 0; float: right">#{userBean.user.name}</h3>
+                                </div>
+                            </a>
+                        </div>
+                        <pm:field/>
+                        <div class="ui-listview" >
+                            <a class="ui-commandlink ui-widget ui-btn" 
+                               onclick="PrimeFaces.Mobile.navigate('#changePassword', {
+                                           reverse: false,
+                                           transition: 'slidefade'});" >
+                                <div style="margin-left: 0em;margin-top: 0em; text-align: left; ">
+                                    <h3 style="margin:0 0; float: left">密码</h3>
+                                    <h3 style="margin:0 0; float: right">修改</h3>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </h:form>  
+            </pm:content>
+        </pm:page>
+
+
+
+        <pm:page id="changeName" >
+            <pm:header title="修改名字" >
+                <h:form>
+                    <p:commandButton  value="Back" icon="ui-icon-arrow-l" styleClass="ui-btn-left ui-btn-inline" 
+                                      oncomplete="PrimeFaces.Mobile.navigate('#personalCenter', {
+                                      reverse: true,
+                                      transition: 'slidefade'});"
+                                      />
+                </h:form>
+            </pm:header>
+            <pm:content>
+                <h:form>
+                    <div style="max-width:960px; display: #{userBean.signInStatus}">
+                        <p:inputText placeholder="#{userBean.user.name}" value="#{userBean.newName}" />
+                        <p:commandButton action="#{userBean.changeUserName}" 
+                                         value="保存"
+                                         update="personalCenter"
+                                         oncomplete="PrimeFaces.Mobile.navigate('#personalCenter', {
+                                         reverse: true,
+                                         transition: 'slidefade'});"/>
+                    </div>
+                </h:form>  
+            </pm:content>
+        </pm:page>
+
+        <pm:page id="changePassword" >
+            <pm:header title="修改密码" >
+                <h:form>
+                    <p:commandButton  value="Back" icon="ui-icon-arrow-l" 
+                                      styleClass="ui-btn-left ui-btn-inline" 
+                                      oncomplete="PrimeFaces.Mobile.navigate('#personalCenter', {
+                                      reverse: true,
+                                      transition: 'slidefade'});"
+                                      />
+                </h:form>
+            </pm:header>
+            <pm:content>
+                <h:form>
+                    <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true"/>
+                    <div style="max-width:960px; display: #{userBean.signInStatus}">
+                        <p:password placeholder="旧密码" value="#{userBean.oldPwd}"   />
+                        <p:password  placeholder="新密码" value="#{userBean.newPwd}"   />
+                        <p:password placeholder="重复新密码" value="#{userBean.newPwd2}"  />
+                        <p:commandButton action="#{userBean.changeUserPassword}" value="确定"  />
+                    </div>
+                </h:form>  
+            </pm:content>
+        </pm:page>
+
+        <pm:page id="talkPage"  lazy="true">
+            <script type="text/javascript">
+
+//<![CDATA[
+                //保证js中可以使用&和<符号，能正确取得url的值
+                var talksocket = null;
+                var userId = "#{userBean.userId.id}";
+                var talkTo = "#{userBean.talkTo.id}";
+                if (userId === null || talkTo === null) {
+                    alert("没有直播间数据，请重新进入");
+                } else {
+                    if ('WebSocket' in window) {
+                        //判断当前浏览器是否支持WebSocket  
+                        talksocket = new WebSocket("ws://10.206.11.101:8080/yunzhi/talkSocket/" + userId + "/" + talkTo);
+                    } else {
+                        alert('您的浏览器不支持 websocket！');
+                    }
+                }
+                if (talksocket !== null) {
+                    //连接发生错误的回调方法  
+                    talksocket.onerror = function () {
+                        setMessageInnerHTML("error");
+                    }
+//连接成功建立的回调方法  
+                    talksocket.onopen = function (event) {
+//                    var text = "链接成功!正在和" + talkId + "会话";
+//                    setMessageInnerHTML(text);
+                    }
+
+                    //接收到消息的回调方法  
+                    talksocket.onmessage = function (event) {
+                        setMessageInnerHTML(event.data);
+                    }
+
+                    //连接关闭的回调方法  
+                    talksocket.onclose = function () {
+                    }
+                }
+//将消息显示在网页上  
+                function setMessageInnerHTML(text) {
+                    var innerHTML = handleJsonMessage(text);
+                    document.getElementById('message').innerHTML += innerHTML;
+                    msg_end.scrollIntoView();
+                }
+
+//关闭连接  
+                function closeWebSocket() {
+                    if (talksocket !== null) {
+                        talksocket.close();
+                    }
+                }
+
+                //发送消息  
+                function send() {
+                    var msg = document.getElementById('inputText').value;
+                    var myJson = {
+                        "type": "message",
+                        "body": [
+                            {"dateTime": getNowFormatDate(), "whoSpeak": "#{userBean.userId.name}", "msg": msg}
+                        ]
+                    };
+                    var text = JSON.stringify(myJson);
+                    if (talksocket !== null) {
+                        talksocket.send(text);
+                        document.getElementById('inputText').value = "";
+                        setMessageInnerHTML(text);
+                    }
+                }
+
+                function getNowFormatDate() {
+                    var myDate = new Date();
+                    return myDate.toJSON(); //获取日期与时间
+                }
+
+                function handleJsonMessage(message) {
+                    var msg = JSON.parse(message);
+                    var text = "";
+                    if (msg.type === "message") {
+                        for (var i = 0; i < msg.body.length; i++) {
+                            var item = "[" + msg.body[i].dateTime + "]<br/>" + msg.body[i].whoSpeak + ":" + msg.body[i].msg;
+                            text += item + '<br/>';
+                        }
+                    }
+                    if (text.length > 0) {
+                        return text;
+                    } else {
+                        return "";
+                    }
+                }
+
+//]]>
+            </script> 
+            <pm:header title="#{userBean.talkTo.name}" >
+                <h:form>
+                    <p:button styleClass="ui-btn-left ui-btn-inline" value="back"
+                              icon="ui-icon-arrow-l" 
+                              onclick="PrimeFaces.Mobile.navigate('#firstPage', {
+                                     reverse: false,
+                                     transition: 'fade'});"/>
+                </h:form>
+            </pm:header>
+            <pm:content >
+                <h:form>
+                    <p:scrollPanel  id="msgPanel" class=" ui-input-text ui-shadow-inset ui-body-inherit ui-corner-all ui-focus" mode="native" style="height:300px" >
+                        <div id="message" />
+                        <div id="msg_end" style="height:0px; overflow:hidden ;"></div>
+                    </p:scrollPanel>
+                    <p:panelGrid columns="2" styleClass="ui-responsive">
+                        <input id="inputText"  maxlength="50"  /> 
+                        <p:commandButton value="发送" icon="fa fa-send"  onclick="send()" type="button"  />
+                    </p:panelGrid>
+                </h:form>  
+            </pm:content>
+        </pm:page>
+        <ui:insert name="BodyContent"></ui:insert>
+    </h:body>
+</html>

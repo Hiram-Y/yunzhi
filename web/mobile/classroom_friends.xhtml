@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile"
+                template="../template/ui_mobile_home.xhtml">
+    <ui:define name="head">
+        <ui:param name="TabMenuActiveIndex" value="2"/>
+        <ui:param name="PageTitle" value="#{userBean.xhtmlTargetCourse.name}" />
+        <ui:param name="footerHome" value="none" />
+    </ui:define>
+    <ui:define name="firstPageContent">
+        <pm:content>
+            <h:form>
+                <p:growl id="msgs"  />
+                <p:dataList value="#{classroomFriendsController.teachers}" var="teacher"  widgetVar='teacherList'>
+                    <p:ajax event="swipeleft" listener="#{userBean.swipeUser}"  oncomplete="PF('dlg1').show();"/>
+                    <p:ajax event="swiperight" listener="#{userBean.swipeUser}"  oncomplete="PF('dlg1').show();"/>
+                    <f:facet name="header">
+                        老师
+                    </f:facet>
+                    <p:link  style="margin-left: 15px;margin-right: 15px" outcome="/mobile/talk" >
+                        <f:param name="userId" value="#{userBean.user.id}"/>
+                        <f:param name="talkTo" value="#{teacher.id}"/>
+                        <f:param name="back" value="/mobile/classroom_friends"/>
+                        <p:graphicImage value="#{teacher.logo}" />
+                        <h2>#{teacher.name}</h2>
+                        <p style="color: red;display:#{classroomFriendsController.showOrNot(teacher.id)}">你有新消息</p>
+                    </p:link>
+                </p:dataList>
+                <p:dataList value="#{classroomFriendsController.students}" var="student"  widgetVar='studentList' >
+                    <p:ajax event="swipeleft" listener="#{userBean.swipeUser}"  oncomplete="PF('dlg1').show();"/>
+                    <p:ajax event="swiperight" listener="#{userBean.swipeUser}"  oncomplete="PF('dlg1').show();"/>
+                    <f:facet name="header">
+                        学友圈
+                    </f:facet>
+                    <p:link  style="margin-left: 15px;margin-right: 15px" outcome="/mobile/talk" >
+                        <f:param name="userId" value="#{userBean.user.id}"/>
+                        <f:param name="talkTo" value="#{student.id}"/>
+                        <f:param name="back" value="/mobile/classroom_friends"/>
+                        <p:graphicImage value="#{student.logo}" />
+                        <h2>#{student.name}</h2>
+                        <p style="color: red;display:#{classroomFriendsController.showOrNot(student.id)}">你有新消息</p>
+                    </p:link>
+                </p:dataList>            
+            </h:form>
+            <p:dialog widgetVar="dlg1" showEffect="pop" modal="false" >
+                <p:menu>
+                    <p:menuitem value="添加好友" actionListener="#{classroomFriendsController.addFriend}" 
+                                oncomplete="PF('dlg1').hide();" ajax="false" style="min-width: 200px"/>
+                </p:menu>
+            </p:dialog>
+        </pm:content>
+    </ui:define>
+</ui:composition>
+
+

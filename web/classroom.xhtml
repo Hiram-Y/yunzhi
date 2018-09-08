@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile"
+                template="./template/ui_classroom.xhtml">
+    <ui:define name="head">
+        <ui:param name="PageTitle" value="课程1" />
+        <style>
+            /*覆盖原始的theme*/
+            .ui-tabs-panel{
+                padding:0em 0em!important;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <div style="width:960px; margin-left:auto; margin-right:auto; text-algin:center;">
+            <p:tabView style="padding:0 0 0 0; border:none;">
+                <p:tab title="信息流" >    
+                    <h1> Godfather Part I</h1>
+                </p:tab>
+                <p:tab title="学习中心" >
+                    <p:tabView scrollable="true" style="padding:0 0 0 0; border:none"  >
+                        <p:tab title="直播间"  > 
+                            <ui:include src="/template/classroom_liveRoom.xhtml" />
+                        </p:tab>
+                        <p:tab title="直播间" >
+                            <ui:include src="/template/classroom_liveRoom.xhtml" />
+                        </p:tab>
+                        <p:tab title="直播间">
+                            <ui:include src="/template/classroom_liveRoom.xhtml" />
+                        </p:tab>
+                    </p:tabView>
+                </p:tab>
+                <p:tab title="学友圈" >             
+                    <h1>Godfather Part III</h1>
+                </p:tab>
+            </p:tabView>
+        </div>
+    </ui:define>
+</ui:composition>

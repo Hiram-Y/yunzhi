@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile"
+                template="../template/ui_mobile_home.xhtml">
+    <ui:define name="head">
+        <ui:param name="TabMenuActiveIndex" value="1"/>
+        <ui:param name="PageTitle" value="#{userBean.xhtmlTargetCourse.name}" />  
+        <ui:param name="footerHome" value="none" />
+    </ui:define>
+    <ui:define name="firstPageContent">
+        <pm:content>
+            <p:panelGrid columns="2" style="display:#{classroomStudyCenterController.showTeacherOptionDiv}">
+                <p:commandButton value="开始直播" action="#{classroomStudyCenterController.startLiveroom}"
+                                 oncomplete="PrimeFaces.Mobile.navigate('#startLiveroom', {
+                                 reverse: false,
+                                 transition: 'slideup'});"/>
+                <p:commandButton value="添加章节"                                 
+                                 oncomplete="PrimeFaces.Mobile.navigate('#newChapter', {
+                                 reverse: false,
+                                 transition: 'slideup'});"/>
+            </p:panelGrid>
+            <p:button value="教室直播间" outcome="/mobile/classroom_liveRoom">
+                <f:param name="liveRoomId" value="#{classroomStudyCenterController.targetCourse.liveroomId.id}" />
+            </p:button>
+            <p:dataList id="chapterList" 
+                        value="#{classroomStudyCenterController.targetChapterList}" 
+                        var="chapter"
+                        >
+                <f:facet name="header">
+                    章节导航
+                </f:facet>
+                <p:commandLink value="#{chapter.name}" style="margin-left: 15px;margin-right: 15px" action="targetChapter" ajax="false" >
+                    <f:setPropertyActionListener target="#{userBean.xhtmlTargetChapter}" value="#{chapter}"/>
+                </p:commandLink>
+            </p:dataList>
+        </pm:content>
+    </ui:define>
+    <ui:define name="BodyContent">
+        <pm:page id="startLiveroom" lazy="true" >
+            <pm:header title="开始直播" >
+                <h:form>
+                    <p:commandButton  value="Back" icon="ui-icon-arrow-l" 
+                                      styleClass="ui-btn-left ui-btn-inline" 
+                                      oncomplete="PrimeFaces.Mobile.navigate('#firstPage', {
+                                      reverse: true,
+                                      transition: 'slideup'});"
+                                      />
+                </h:form>
+            </pm:header>
+            <pm:content>
+                <h:form id="startLiveroom_contentForm">
+                    <div class="ui-listview" >
+                        <a class="ui-commandlink ui-widget ui-btn"                     
+                           onclick="PrimeFaces.Mobile.navigate('#changeTitle', {
+                                       reverse: false,
+                                       transition: 'slideup'});">
+                            <div style="margin-left: 0em;margin-top: 0em; text-align: left; " >
+                                <h3 style="margin:0 0; float: left">直播间标题</h3>
+                                <h3 style="margin:0 0; float: right">#{classroomStudyCenterController.targetCourse.liveroomId.title}</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <pm:field/>
+                    <div class="ui-listview" >
+                        <div class="ui-commandlink ui-widget ui-btn" >
+                            <div style="margin-left: 0em;margin-top: 0em; text-align: left; ">
+                                <h3 style="margin:0 0; float: left">推流地址</h3>
+                                <h3 style="margin:0 0; float: right">#{classroomStudyCenterController.targetCourse.liveroomId.rtmp}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <pm:field/>
+                    <div class="ui-listview" >
+                        <div class="ui-commandlink ui-widget ui-btn"  >
+                            <div style="margin-left: 0em;margin-top: 0em; text-align: left; ">
+                                <h3 style="margin:0 0; float: left">直播码</h3>
+                                <h3 style="margin:0 0; float: right">#{classroomStudyCenterController.targetCourse.liveroomId.stream}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>  
+            </pm:content>
+        </pm:page>
+        <pm:page id="changeTitle"  >
+            <pm:header title="编辑直播间标题" >
+                <h:form>
+                    <p:commandButton  value="Back" icon="ui-icon-arrow-l" 
+                                      styleClass="ui-btn-left ui-btn-inline" 
+                                      oncomplete="PrimeFaces.Mobile.navigate('#startLiveroom', {
+                                      reverse: true,
+                                      transition: 'slideup'});"
+                                      />
+                </h:form>
+            </pm:header>
+            <pm:content>
+                <h:form>
+                    <pm:field>
+                        <p:outputLabel for="address" value="直播间标题" />
+                        <p:inputTextarea id="address" 
+                                         value="#{classroomStudyCenterController.targetCourse.liveroomId.title}" />
+                    </pm:field>
+                    <p:commandButton value="保存" action="#{classroomStudyCenterController.newLiveroomTitle}" 
+                                     oncomplete="PrimeFaces.Mobile.navigate('#startLiveroom', {
+                                     reverse: true,
+                                     transition: 'slideup'});"
+                                     update="startLiveroom:startLiveroom_contentForm"
+                                     icon="ui-icon-check"/>
+                </h:form>  
+            </pm:content>
+        </pm:page>
+
+        <pm:page id="newChapter" lazy="true" >
+            <pm:header title="添加章节" >
+                <h:form>
+                    <p:commandButton  value="Back" icon="ui-icon-arrow-l" 
+                                      styleClass="ui-btn-left ui-btn-inline" 
+                                      oncomplete="PrimeFaces.Mobile.navigate('#firstPage', {
+                                      reverse: true,
+                                      transition: 'slideup'});"
+                                      />
+                </h:form>
+            </pm:header>
+            <pm:content>
+                <h:form>
+                    <p:outputPanel id="editFormPanel">
+                        <p:messages id="message_newChapter"   autoUpdate="true" closable="true"/> 
+                        <pm:field>
+                            <p:outputLabel for="phone" value="序号" />
+                            <p:inputText id="phone" 
+                                         value="#{classroomStudyCenterController.sequence_number}"
+                                         type="tel"
+                                         placeholder="序号是章节导航列表排列的依据"/>
+                        </pm:field>
+                        <pm:field>
+                            <p:outputLabel for="address" value="章节名称" />
+                            <p:inputTextarea id="address" 
+                                             value="#{classroomStudyCenterController.chapter.name}" />
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton value="保存" action="#{classroomStudyCenterController.newChapter}" 
+                                     update="firstPage:firstContentForm:chapterList,message_newChapter" icon="ui-icon-check"/>
+                </h:form>  
+            </pm:content>
+        </pm:page>
+
+    </ui:define>
+</ui:composition>
+

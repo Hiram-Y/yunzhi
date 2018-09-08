@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>云智教育平台</title>
+            </f:facet>
+            <style>
+                .responsive{
+                    text-align: center;
+                }
+                .responsive .img {
+                    opacity: 1;
+                    margin: 5px;
+                    border: 1px solid #ccc;
+                    float: left;
+                    max-width: 400px;
+                }
+
+                .responsive .img:hover {
+                    border: 1px solid #777;
+                    opacity: 0.8;
+                }
+
+                .responsive .img img {
+                    width: 100%;
+                    height: auto;
+                }
+
+                .responsive.desc {
+                    padding: 15px;
+                    text-align: center;
+                }
+            </style>
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous"/>
+            <ui:insert name="head"></ui:insert>
+        </h:head>
+        <h:body>
+            <h:form id="form_ui">
+                <p:toolbar id="toolbar" style="min-width: 960px;">  
+                    <f:facet name="left">
+                        <p:commandButton icon="fa fa-bars" oncomplete="PF('sidebar').show()" />
+                        <p:outputLabel value="#{PageTitle}" style="margin-left: 15px" />
+                    </f:facet>
+                    <f:facet id="toolbar_right" name="right">
+                        <p:button id="signInButton" value="注册/登陆"  style="display:#{userBean.signOutStatus};" outcome="/login" />
+                        <p:commandButton id="thButton" icon="fa fa-th" style="display:#{userBean.signInStatus};" onclick="PF('appsOLP').show()" />
+                        <p:commandButton id="bellButton" icon="fa fa-bell"  style="display:#{userBean.signInStatus};"  onclick="PF('messageOLP').show()" />
+                        <p:commandButton id="userButton" value="#{userBean.user.id}" icon="fa fa-user" style="display:#{userBean.signInStatus};" onclick="PF('userOLP').show()"/>
+                    </f:facet>
+                </p:toolbar>  
+                <p:overlayPanel id="appsOLP" for="thButton"   my="right top" at="right bottom"  style="width:180px" widgetVar="appsOLP">
+                    <h2>应用</h2>
+                    <p:button value="我的课程" icon="fa fa-book" outcome="/myCourses" />
+                </p:overlayPanel>
+                <p:overlayPanel id="messageOLP" for="bellButton"   my="right top" at="right bottom"  style="width:180px" widgetVar="messageOLP">
+                    <h2>通知</h2>
+                </p:overlayPanel>
+                <p:overlayPanel id="userOLP" for="userButton"   my="right top" at="right bottom"  style="width:300px" widgetVar="userOLP" >
+                    <ui:repeat value="#{userBean.resumeList}" var="resume"   >
+                        <div class="responsive">
+                            <div class="img" style="max-width:280px">
+                                <p:commandLink action="personalCenter" ajax="false" >
+                                    <p:graphicImage value="/images/demo1.jpg" />
+                                </p:commandLink>
+                            </div>
+                            <div class="desc">
+                                <h:outputText value="#{userBean.user.name}" /><hr/>
+                                <h:outputText value="#{resume.identity.name}" />
+                            </div>
+                        </div>
+                    </ui:repeat>
+                    <p:separator />
+                    <p:commandButton value="登出"  icon="fa fa-sign-out-alt"  action="#{userBean.signOut()}" update="signInButton,bellButton,userButton,thButton" oncomplete="PF('userOLP').hide()"   style="float:right;margin-bottom: 10px" />
+                </p:overlayPanel>  
+<!--                <p:sidebar widgetVar="sidebar" baseZIndex="10000" style="width: 250px">
+                    <h1>导航</h1>
+                    <p:menu style="width: 200px">
+                        <p:menuitem value="首页" icon="fa fa-home"  outcome="/index" />
+                        <p:menuitem value="课程" icon="fa fa-book"     outcome="/course"/>
+                        <p:menuitem value="院校" icon="fa fa-university" outcome="/school" />
+                        <p:separator />
+                        <p:menuitem value="我的课程" icon="fa fa-book" outcome="/myCourses" />
+                        <p:menuitem value="个人中心" icon="fa fa-user" outcome="/personalCenter" />
+                    </p:menu>
+                </p:sidebar>-->
+            </h:form>
+            <ui:insert name="content"></ui:insert>
+        </h:body>
+    </f:view>
+</html>
+

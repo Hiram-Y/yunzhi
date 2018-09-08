@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:p="http://primefaces.org/ui">  
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <h:head>  
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous"/>
+    </h:head>  
+    <h:body>    
+        <pm:page id="targetChapter" >
+            <pm:header>
+                <p:button styleClass="ui-btn-left ui-btn-inline" value="Back" icon="ui-icon-arrow-l" outcome="classroom_studyCenter"  />
+                <p:button styleClass="ui-btn-right ui-btn-inline" value="上传视频" outcome="/mobile/uploadVedio"  
+                          style="display:#{targetChapterController.showTeacherOptionDiv}"/>
+                <h1><h:outputText  value="#{userBean.xhtmlTargetChapter.name}" /></h1>
+            </pm:header>
+            <pm:content>
+                <p:tabView  >
+                    <p:tab title="视频及资料">
+                        <p:accordionPanel value="#{targetChapterController.vedioList}"  var="vedio">
+                            <p:tab title="#{vedio.name}">
+                                <div style="max-width: 960px;margin-left: auto;margin-right: auto;text-align: center;">
+                                    <video  style="background-color: black;width:100%; height:100%; object-fit: fill"
+                                            controls="controls" 
+                                            src="#{request.contextPath}#{vedio.url}"
+                                            type="video/mp4">
+                                    </video>
+                                </div>
+                            </p:tab>
+                        </p:accordionPanel>
+                    </p:tab>
+                    <p:tab title="测试与试题">
+                    </p:tab>
+                </p:tabView>
+            </pm:content>
+        </pm:page>
+    </h:body>  
+</html>  

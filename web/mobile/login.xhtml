@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:p="http://primefaces.org/ui">  
+
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <h:head>  
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous"/>
+    </h:head>  
+    <h:body>    
+        <pm:page id="secondPage" >
+            <pm:header >
+                <p:button styleClass="ui-btn-left ui-btn-inline" value="Back" icon="ui-icon-arrow-l" outcome="index" />
+                <h1><h:outputText value="云智教育平台" /></h1>
+            </pm:header>
+            <pm:content >
+                <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true">
+                </p:messages>
+                <p:tabView>
+                    <p:tab title="登陆">
+                        <h:form> 
+                            <pm:field>
+                                <p:outputLabel  value="手机号码" />
+                                <p:inputText value="#{loginController.userID}"  required="true" type="tel" />
+                            </pm:field>
+                            <pm:field>
+                                <p:outputLabel  value="密码" />
+                                <h:inputSecret  value="#{loginController.userPassword}" required="true"/>
+                            </pm:field>
+                            <p:commandButton value="确认" action="#{loginController.logIn}"  ajax="false"/>
+                        </h:form>
+                    </p:tab>
+                    <p:tab title="注册">
+                        <h:form> 
+                            <pm:field>
+                                <p:outputLabel  value="手机号码" />
+                                <p:inputText value="#{loginController.userID}" required="true" type="tel" />
+                            </pm:field>
+                            <pm:field>
+                                <p:outputLabel  value="姓名" />
+                                <p:inputText value="#{loginController.userName}" required="true" />
+                            </pm:field>
+                            <pm:field>
+                                <p:outputLabel  value="密码" />
+                                <p:password  value="#{loginController.userPassword}" required="true"   />
+                            </pm:field>
+                            <pm:field>
+                                <p:outputLabel  value="重复密码" />
+                                <p:password value="#{loginController.userPassword2}" required="true"  />
+                            </pm:field>
+                            <p:commandButton value="确认" action="#{loginController.register()}"  ajax="false"/>
+                        </h:form>  
+                    </p:tab>
+                </p:tabView>
+            </pm:content>
+        </pm:page>
+    </h:body>  
+</html>  

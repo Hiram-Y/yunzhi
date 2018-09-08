@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <f:view renderKitId="PRIMEFACES_MOBILE" />
+    <h:head>
+        <style>
+            .myContent{
+                padding: 0em 0em !important;
+            }
+        </style>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous"/>
+        <ui:insert name="head"></ui:insert>
+    </h:head>
+    <h:body>
+        <pm:page id="firstPage">
+            <h:form id="firstForm">
+                <pm:header title="#{PageTitle}" fixed="true" >
+                    <p:toolbar id="toolbar" >
+                        <f:facet name="left">
+                            <p:commandButton id="btn_bars" icon="fa fa-bars" value=""   />
+                            <p:commandButton icon="fa fa-search" value="" action="/mobile/search"  ajax="false"/>
+                        </f:facet>
+                        <f:facet id="toolbar_right" name="right">
+                            <p:button id="signInButton" value="注册/登陆"  style="display:#{userBean.signOutStatus};" outcome="login" />
+                            <p:commandButton id="thButton" value="" icon="fa fa-th" style="display:#{userBean.signInStatus};" onclick="PF('appsOLP').show()" />
+                            <p:commandButton id="bellButton" value="" icon="fa fa-bell"  style="display:#{userBean.signInStatus};"  onclick="PF('messageOLP').show()" />
+                            <p:commandButton id="userButton" value="&#160;#{userBean.user.name}" icon="fa fa-user" style="display:#{userBean.signInStatus};" onclick="PF('pnl-basic').show()"/>
+                        </f:facet>
+                    </p:toolbar>
+                </pm:header>     
+                <pm:footer fixed="true" >
+                    <p:tabMenu activeIndex="#{TabMenuActiveIndex}">
+                        <p:menuitem value="信息流" outcome="/mobile/classroom_informationFlow" />
+                        <p:menuitem value="学习中心" outcome="/mobile/classroom_studyCenter" />
+                        <p:menuitem value="学友圈" outcome="/mobile/classroom_friends" />
+                    </p:tabMenu>
+                </pm:footer>
+                <pm:content >
+                    <ui:insert name="firstPageContent"></ui:insert>
+                </pm:content> 
+                <p:overlayPanel id="appsOLP" for="thButton"  at="left"   widgetVar="appsOLP" showEffect="overlay" >
+                    <h2>应用</h2>
+                    <p:button value="我的好友" icon="fa fa-book" outcome="/mobile/friendsApp" />
+                </p:overlayPanel>
+                <p:overlayPanel id="messageOLP" for="bellButton"  at="left"  widgetVar="messageOLP" showEffect="overlay" >
+                    <h2>通知</h2>
+                </p:overlayPanel>
+                <p:overlayPanel id="pnl-basic" for="btn_bars" widgetVar="pnl-basic" at="left"  showEffect="overlay" >
+                    <div style="display: #{userBean.signInStatus}">
+                        <ui:repeat value="#{userBean.resumeList}" var="resume" >
+                            <h:outputLink value="#">
+                                <p:graphicImage value="/media/images/logo_user.jpg"  width="100%"/>
+                            </h:outputLink>
+                            <h3>#{userBean.user.name}</h3>
+                            <h3>#{resume.identity.name}</h3>
+                        </ui:repeat>
+                        <p:separator />
+                        <p:commandButton value="登出"  icon="fa fa-sign-out-alt"  action="#{userBean.signOut()}" update="pnl-basic,signInButton,bellButton,userButton,thButton" oncomplete="PF('pnl-basic').hide()"  />
+                        <p:separator />
+                    </div>
+                    <p:menu>
+                        <p:submenu label="导航栏" >
+                            <p:menuitem value="首页" outcome="/mobile/index"  />
+                            <p:menuitem value="课程"  outcome="/mobile/course" />
+                            <p:menuitem value="院校"  outcome="/mobile/school"  />
+                            <p:menuitem value="我的课程"  outcome="/mobile/myCourses" />
+                        </p:submenu>
+                    </p:menu>
+                </p:overlayPanel>
+            </h:form>
+        </pm:page>
+        <ui:insert name="BodyContent"></ui:insert>
+    </h:body>
+</html>

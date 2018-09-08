@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile"
+                template="../template/ui_mobile_home.xhtml">
+    <ui:define name="head">
+        <ui:param name="PageTitle" value="云智教育平台" />   
+        <ui:param name="TabMenuActiveIndex" value="3"/>
+        <ui:param name="footerClassroom" value="none" />
+    </ui:define>
+    <ui:define name="firstPageContent">
+        <pm:content>
+                <div style="display: #{myCoursesController.isXhtmlDivShow}">
+                    <p:dataList value="#{myCoursesController.myCoursesList}" var="course" >
+                        <p:commandLink oncomplete="window.open('\/yunzhi\/faces\/mobile\/classroom_informationFlow.xhtml','_self')" >
+                            <f:setPropertyActionListener target="#{userBean.xhtmlTargetCourse}" value="#{course}" />
+                            <p:graphicImage value="#{course.logo}" />
+                            <h2>#{course.name}</h2>
+                            <p>#{course.name}</p>
+                        </p:commandLink>
+                    </p:dataList>
+                </div>
+            <div style="display: #{userBean.signOutStatus}">
+                <p:button value="登陆/注册" outcome="login" />
+            </div>
+        </pm:content>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./template/ui_home.xhtml">
+    <ui:define name="head">
+        <ui:param name="selectHomeView" value="white" />
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="form_home">
+            <div style="width:960px; margin-left:auto; margin-right:auto; text-algin:center">
+                <p:carousel  value="#{indexController.vedios}" var="vedio"  headerText="课堂直播间"  style="width:960px;border:0px;"  numVisible="1" >
+                    <video width="960" height="540" style="background-color: black;"
+                           autoplay="autoplay" controls="controls" autobuffer="autobuffer"
+                           src="#{vedio}"
+                           type="application/vnd.apple.mpegurl">
+                    </video>
+                </p:carousel>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

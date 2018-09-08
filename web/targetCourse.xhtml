@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./template/ui_home.xhtml">
+    <ui:define name="head">
+        <ui:param name="selectCourseView" value="white" />
+    </ui:define>
+    <ui:define name="content">
+        <div style="display: #{targetCourseController.isXhtmlDivShow}">
+            <h1>#{targetCourseController.targetCourse.name}</h1>
+            <h:form id="form">
+                <p:commandButton value="#{targetCourseController.xhtmlButtonValue}" actionListener="#{targetCourseController.xhtmlButtonAction}" disabled="#{targetCourseController.xhtmlbuttonDisabled}" />
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+
